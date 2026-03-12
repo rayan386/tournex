@@ -26,21 +26,6 @@
                     fontFamily: {
                         'sans': ['Inter', 'system-ui', 'sans-serif'],
                         'gaming': ['Orbitron', 'monospace']
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 3s infinite',
-                        'float': 'float 3s ease-in-out infinite',
-                        'slide-in': 'slideIn 0.3s ease-out'
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' }
-                        },
-                        slideIn: {
-                            'from': { transform: 'translateX(-100%)', opacity: '0' },
-                            'to': { transform: 'translateX(0)', opacity: '1' }
-                        }
                     }
                 }
             }
@@ -63,11 +48,6 @@
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
         
-        .stats-card {
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -75,15 +55,6 @@
             right: 0;
             z-index: 50;
             box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        
-        .mobile-menu {
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-        }
-        
-        .mobile-menu.open {
-            transform: translateX(0);
         }
         
         .gradient-bg {
@@ -119,7 +90,33 @@
             border-radius: 4px;
             transition: width 0.3s ease;
         }
-        
+
+        .admin-card {
+            background: rgba(31, 41, 55, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(75, 85, 99, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .admin-card:hover {
+            transform: translateY(-2px);
+            border-color: #6366F1;
+        }
+
+        .winner-badge {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
         @media (min-width: 768px) {
             .bottom-nav {
                 display: none;
@@ -149,30 +146,6 @@
             </button>
         </div>
     </nav>
-
-    <!-- Mobile Menu Overlay -->
-    <div id="mobile-menu" class="mobile-menu fixed inset-0 z-50 bg-dark/95 backdrop-blur-sm md:hidden">
-        <div class="flex flex-col h-full p-6">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-bold font-gaming">GameTourney</h2>
-                <button onclick="toggleMobileMenu()" class="text-2xl">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div id="mobile-nav-items" class="space-y-4 flex-1"></div>
-            <div class="pt-6 border-t border-gray-700">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-r from-primary to-purple-600 rounded-full flex items-center justify-center">
-                        <i class="fas fa-user text-white"></i>
-                    </div>
-                    <div>
-                        <div class="font-semibold" id="mobile-username">Invité</div>
-                        <div class="text-sm text-gray-400" id="mobile-userrole">Joueur</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Main Container -->
     <div class="container mx-auto px-4 pb-20 md:pb-4">
@@ -205,7 +178,7 @@
 
         <!-- Login Modal -->
         <div id="login-modal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-            <div class="bg-gray-800 rounded-xl max-w-md w-full p-6 animate-slide-in">
+            <div class="bg-gray-800 rounded-xl max-w-md w-full p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-xl font-bold">Connexion</h3>
                     <button onclick="toggleLogin()" class="text-gray-400 hover:text-white">
@@ -255,65 +228,6 @@
             </div>
         </div>
 
-        <!-- Admin Dashboard Modal -->
-        <div id="admin-modal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-            <div class="bg-gray-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden animate-slide-in">
-                <div class="flex justify-between items-center p-6 border-b border-gray-700">
-                    <h3 class="text-xl font-bold">Tableau de bord Admin</h3>
-                    <button onclick="toggleAdminModal()" class="text-gray-400 hover:text-white">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-                <div class="p-6 overflow-y-auto max-h-[70vh]">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                        <div class="stats-card bg-gray-900/50 rounded-lg p-4 border border-gray-700">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-sm text-gray-400">Tournois actifs</p>
-                                    <p class="text-2xl font-bold" id="admin-active-tournaments">12</p>
-                                </div>
-                                <div class="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-trophy text-primary text-xl"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="stats-card bg-gray-900/50 rounded-lg p-4 border border-gray-700">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-sm text-gray-400">Joueurs inscrits</p>
-                                    <p class="text-2xl font-bold" id="admin-total-players">856</p>
-                                </div>
-                                <div class="w-12 h-12 bg-secondary/20 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-users text-secondary text-xl"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="stats-card bg-gray-900/50 rounded-lg p-4 border border-gray-700">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-sm text-gray-400">Demandes en attente</p>
-                                    <p class="text-2xl font-bold" id="admin-pending-requests">8</p>
-                                </div>
-                                <div class="w-12 h-12 bg-warning/20 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-clock text-warning text-xl"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-8">
-                        <h4 class="text-lg font-bold mb-4">Créer un tournoi</h4>
-                        <div id="create-tournament-form" class="space-y-4"></div>
-                    </div>
-                    
-                    <div>
-                        <h4 class="text-lg font-bold mb-4">Demandes de participation</h4>
-                        <div id="admin-requests-list" class="space-y-3"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Main Content Sections -->
         <main>
             <!-- Hero Section -->
@@ -334,7 +248,7 @@
                         </div>
                         <div class="md:w-1/2 flex justify-center">
                             <div class="relative">
-                                <div class="w-64 h-64 bg-gradient-to-r from-primary/30 to-purple-600/30 rounded-full animate-pulse-slow"></div>
+                                <div class="w-64 h-64 bg-gradient-to-r from-primary/30 to-purple-600/30 rounded-full animate-pulse"></div>
                                 <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                                     <div class="text-center">
                                         <div class="text-6xl font-bold font-gaming mb-2">24/7</div>
@@ -348,22 +262,28 @@
 
                 <!-- Quick Stats -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                    <div class="stats-card bg-gray-800/50 rounded-lg p-4">
+                    <div class="bg-gray-800/50 rounded-lg p-4 backdrop-blur-sm">
                         <div class="text-2xl font-bold text-primary">150+</div>
                         <div class="text-sm text-gray-400">Tournois actifs</div>
                     </div>
-                    <div class="stats-card bg-gray-800/50 rounded-lg p-4">
+                    <div class="bg-gray-800/50 rounded-lg p-4 backdrop-blur-sm">
                         <div class="text-2xl font-bold text-secondary">5K+</div>
                         <div class="text-sm text-gray-400">Joueurs inscrits</div>
                     </div>
-                    <div class="stats-card bg-gray-800/50 rounded-lg p-4">
+                    <div class="bg-gray-800/50 rounded-lg p-4 backdrop-blur-sm">
                         <div class="text-2xl font-bold text-accent">50K€</div>
                         <div class="text-sm text-gray-400">Prix distribués</div>
                     </div>
-                    <div class="stats-card bg-gray-800/50 rounded-lg p-4">
+                    <div class="bg-gray-800/50 rounded-lg p-4 backdrop-blur-sm">
                         <div class="text-2xl font-bold text-info">24/7</div>
                         <div class="text-sm text-gray-400">Support actif</div>
                     </div>
+                </div>
+
+                <!-- Winners Section -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold mb-4">🏆 Derniers Gagnants</h2>
+                    <div id="winners-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
                 </div>
             </section>
 
@@ -416,28 +336,25 @@
                             <button onclick="toggleLogin()" id="profile-login-btn" class="bg-primary hover:bg-primary/90 px-4 py-2 rounded-lg font-semibold">
                                 <i class="fas fa-sign-in-alt mr-2"></i>Se connecter
                             </button>
-                            <button onclick="toggleAdminModal()" id="admin-btn" class="bg-accent hover:bg-accent/90 px-4 py-2 rounded-lg font-semibold hidden">
-                                <i class="fas fa-cog mr-2"></i>Admin
-                            </button>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                        <div class="stats-card bg-gray-900/50 rounded-lg p-4">
+                        <div class="bg-gray-900/50 rounded-lg p-4">
                             <div class="flex items-center justify-between mb-2">
                                 <div class="text-sm text-gray-400">Victoires</div>
                                 <i class="fas fa-trophy text-accent"></i>
                             </div>
                             <div class="text-2xl font-bold" id="profile-wins">0</div>
                         </div>
-                        <div class="stats-card bg-gray-900/50 rounded-lg p-4">
+                        <div class="bg-gray-900/50 rounded-lg p-4">
                             <div class="flex items-center justify-between mb-2">
                                 <div class="text-sm text-gray-400">Tournois joués</div>
                                 <i class="fas fa-gamepad text-primary"></i>
                             </div>
                             <div class="text-2xl font-bold" id="profile-tournaments">0</div>
                         </div>
-                        <div class="stats-card bg-gray-900/50 rounded-lg p-4">
+                        <div class="bg-gray-900/50 rounded-lg p-4">
                             <div class="flex items-center justify-between mb-2">
                                 <div class="text-sm text-gray-400">Classement</div>
                                 <i class="fas fa-chart-line text-secondary"></i>
@@ -454,6 +371,105 @@
                     <div>
                         <h3 class="text-xl font-bold mb-4">Classement général</h3>
                         <div id="leaderboard" class="space-y-3"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Admin Section -->
+            <section id="admin" class="mb-8 hidden">
+                <div class="bg-gray-800/50 rounded-xl p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">👑 Panneau d'Administration</h2>
+                        <div class="bg-accent/20 text-accent px-4 py-2 rounded-lg font-bold">
+                            Mode Admin
+                        </div>
+                    </div>
+
+                    <!-- Admin Stats -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                        <div class="admin-card rounded-lg p-4">
+                            <div class="text-3xl font-bold text-primary" id="admin-total-tournaments">12</div>
+                            <div class="text-sm text-gray-400">Tournois totaux</div>
+                        </div>
+                        <div class="admin-card rounded-lg p-4">
+                            <div class="text-3xl font-bold text-secondary" id="admin-total-players">856</div>
+                            <div class="text-sm text-gray-400">Joueurs inscrits</div>
+                        </div>
+                        <div class="admin-card rounded-lg p-4">
+                            <div class="text-3xl font-bold text-warning" id="admin-active-tournaments">8</div>
+                            <div class="text-sm text-gray-400">Tournois actifs</div>
+                        </div>
+                        <div class="admin-card rounded-lg p-4">
+                            <div class="text-3xl font-bold text-info" id="admin-total-winners">24</div>
+                            <div class="text-sm text-gray-400">Gagnants</div>
+                        </div>
+                    </div>
+
+                    <!-- Create Tournament -->
+                    <div class="admin-card rounded-lg p-6 mb-8">
+                        <h3 class="text-xl font-bold mb-4">➕ Créer un nouveau tournoi</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Nom du tournoi</label>
+                                <input type="text" id="new-tournament-name" placeholder="Ex: Championnat Valorant" class="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Jeu</label>
+                                <input type="text" id="new-tournament-game" placeholder="Ex: Valorant" class="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Nombre max de joueurs</label>
+                                <input type="number" id="new-tournament-max" placeholder="64" class="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Prix</label>
+                                <input type="text" id="new-tournament-prize" placeholder="5000€" class="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Date</label>
+                                <input type="date" id="new-tournament-date" class="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Type</label>
+                                <select id="new-tournament-type" class="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary">
+                                    <option value="public">Public</option>
+                                    <option value="private">Privé</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button onclick="createNewTournament()" class="mt-4 bg-primary hover:bg-primary/90 px-6 py-2 rounded-lg font-semibold">
+                            <i class="fas fa-plus mr-2"></i>Créer le tournoi
+                        </button>
+                    </div>
+
+                    <!-- Declare Winner -->
+                    <div class="admin-card rounded-lg p-6 mb-8">
+                        <h3 class="text-xl font-bold mb-4">🏆 Déclarer un gagnant</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Tournoi</label>
+                                <select id="winner-tournament" class="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary">
+                                    <option value="">Sélectionner un tournoi</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Joueur gagnant</label>
+                                <input type="text" id="winner-name" placeholder="Nom du joueur" class="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Prix gagné</label>
+                                <input type="text" id="winner-prize" placeholder="5000€" class="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary">
+                            </div>
+                        </div>
+                        <button onclick="declareWinner()" class="mt-4 bg-accent hover:bg-accent/90 px-6 py-2 rounded-lg font-semibold">
+                            <i class="fas fa-crown mr-2"></i>Déclarer gagnant
+                        </button>
+                    </div>
+
+                    <!-- Pending Requests -->
+                    <div class="admin-card rounded-lg p-6">
+                        <h3 class="text-xl font-bold mb-4">⏳ Demandes en attente</h3>
+                        <div id="admin-requests-list" class="space-y-3"></div>
                     </div>
                 </div>
             </section>
@@ -476,16 +492,21 @@
     </div>
 
     <script>
-        // Data layer
+        // Navigation Items
         const navigationItems = [
-            { "label": "Accueil", "href": "#home", "icon": "fas fa-home", "section": "home" },
-            { "label": "Tournois", "href": "#tournaments", "icon": "fas fa-trophy", "section": "tournaments" },
-            { "label": "Équipes", "href": "#teams", "icon": "fas fa-users", "section": "teams" },
-            { "label": "Classement", "href": "#leaderboard", "icon": "fas fa-chart-line", "section": "profile" },
-            { "label": "Communauté", "href": "#community", "icon": "fas fa-comments", "section": "community" }
+            { "label": "Accueil", "icon": "fas fa-home", "section": "home" },
+            { "label": "Tournois", "icon": "fas fa-trophy", "section": "tournaments" },
+            { "label": "Équipes", "icon": "fas fa-users", "section": "teams" },
+            { "label": "Classement", "icon": "fas fa-chart-line", "section": "profile" },
+            { "label": "Communauté", "icon": "fas fa-comments", "section": "community" }
         ];
 
-        const tournamentsData = [
+        // Admin credentials - CHANGE THIS TO YOUR PREFERRED USERNAME/PASSWORD
+        const ADMIN_USERNAME = "gamemaster";
+        const ADMIN_PASSWORD = "tournament2024";
+
+        // Data
+        let tournamentsData = [
             { 
                 "id": 1, 
                 "name": "Championnat Valorant", 
@@ -527,142 +548,34 @@
                 "date": "10 Jan 2025",
                 "gameIcon": "fas fa-dragon",
                 "color": "bg-blue-500"
-            },
-            { 
-                "id": 4, 
-                "name": "CS:GO Championship", 
-                "game": "Counter-Strike", 
-                "image": "https://picsum.photos/400/300?random=4", 
-                "players": 16, 
-                "maxPlayers": 32, 
-                "type": "public", 
-                "status": "open", 
-                "prize": "4000€",
-                "date": "5 Jan 2025",
-                "gameIcon": "fas fa-gun",
-                "color": "bg-orange-500"
-            },
-            { 
-                "id": 5, 
-                "name": "Rocket League Pro", 
-                "game": "Rocket League", 
-                "image": "https://picsum.photos/400/300?random=5", 
-                "players": 24, 
-                "maxPlayers": 32, 
-                "type": "private", 
-                "status": "open", 
-                "prize": "2000€",
-                "date": "25 Dec 2024",
-                "gameIcon": "fas fa-car",
-                "color": "bg-yellow-500"
-            },
-            { 
-                "id": 6, 
-                "name": "Call of Duty Warzone", 
-                "game": "Call of Duty", 
-                "image": "https://picsum.photos/400/300?random=6", 
-                "players": 100, 
-                "maxPlayers": 150, 
-                "type": "public", 
-                "status": "open", 
-                "prize": "10000€",
-                "date": "30 Dec 2024",
-                "gameIcon": "fas fa-soldier",
-                "color": "bg-green-500"
             }
         ];
 
-        const teamsData = [
-            { 
-                "id": 1, 
-                "name": "Team Alpha", 
-                "game": "Valorant", 
-                "members": 4, 
-                "maxMembers": 5, 
-                "rank": "Diamant", 
-                "status": "open",
-                "leader": "ProPlayer1",
-                "color": "bg-red-500/20"
-            },
-            { 
-                "id": 2, 
-                "name": "Victory Squad", 
-                "game": "Fortnite", 
-                "members": 2, 
-                "maxMembers": 2, 
-                "rank": "Champion", 
-                "status": "full",
-                "leader": "FortniteKing",
-                "color": "bg-purple-500/20"
-            },
-            { 
-                "id": 3, 
-                "name": "Dragon Slayers", 
-                "game": "League of Legends", 
-                "members": 5, 
-                "maxMembers": 5, 
-                "rank": "Master", 
-                "status": "open",
-                "leader": "MidLanePro",
-                "color": "bg-blue-500/20"
-            }
+        let winnersData = [
+            { "tournament": "Valorant Masters", "winner": "ProPlayer1", "prize": "5000€", "date": "10 Dec 2024" },
+            { "tournament": "Fortnite Cup", "winner": "FortniteKing", "prize": "3000€", "date": "5 Dec 2024" },
+            { "tournament": "LoL Championship", "winner": "MidLanePro", "prize": "8000€", "date": "1 Dec 2024" }
         ];
 
-        const leaderboardData = [
-            { "rank": 1, "username": "ProPlayer1", "wins": 42, "tournaments": 56, "rating": 2450 },
-            { "rank": 2, "username": "FortniteKing", "wins": 38, "tournaments": 48, "rating": 2310 },
-            { "rank": 3, "username": "MidLanePro", "wins": 35, "tournaments": 52, "rating": 2250 },
-            { "rank": 4, "username": "CSGOMaster", "wins": 32, "tournaments": 45, "rating": 2180 },
-            { "rank": 5, "username": "RocketQueen", "wins": 28, "tournaments": 40, "rating": 2100 }
-        ];
-
-        const tournamentHistoryData = [
-            { "tournament": "Valorant Weekly #15", "date": "10 Dec 2024", "position": "1er", "prize": "500€" },
-            { "tournament": "Fortnite Duo Cup", "date": "5 Dec 2024", "position": "3ème", "prize": "150€" },
-            { "tournament": "CS:GO Open", "date": "1 Dec 2024", "position": "2ème", "prize": "300€" },
-            { "tournament": "Rocket League Pro", "date": "25 Nov 2024", "position": "1er", "prize": "400€" }
-        ];
-
-        const communityDiscussions = [
-            { "title": "Meta actuelle sur Valorant", "author": "ProPlayer1", "replies": 42, "category": "Valorant" },
-            { "title": "Recherche coéquipier Fortnite", "author": "FortniteKing", "replies": 18, "category": "Fortnite" },
-            { "title": "Guide débutant League of Legends", "author": "MidLanePro", "replies": 56, "category": "LoL" },
-            { "title": "Prochain tournoi CS:GO", "author": "CSGOMaster", "replies": 23, "category": "CS:GO" }
-        ];
-
-        const communityEvents = [
-            { "title": "LAN Party Paris", "date": "20 Dec 2024", "participants": 150, "game": "Multi-jeux" },
-            { "title": "Workshop Valorant", "date": "15 Jan 2025", "participants": 80, "game": "Valorant" },
-            { "title": "Finale Championnat", "date": "30 Dec 2024", "participants": 200, "game": "LoL" }
-        ];
-
-        const adminRequests = [
+        let adminRequests = [
             { "id": 1, "username": "NewPlayer123", "tournament": "Championnat Valorant", "date": "10 Dec 2024" },
-            { "id": 2, "username": "GamerPro", "tournament": "Tournoi Fortnite Duo", "date": "9 Dec 2024" },
-            { "id": 3, "username": "CSGOLover", "tournament": "CS:GO Championship", "date": "8 Dec 2024" }
-        ];
-
-        const createTournamentFormFields = [
-            { "id": "tournament-name", "label": "Nom du tournoi", "type": "text", "placeholder": "Ex: Championnat Valorant" },
-            { "id": "tournament-game", "label": "Jeu", "type": "text", "placeholder": "Ex: Valorant, Fortnite, LoL" },
-            { "id": "tournament-max-players", "label": "Nombre maximum de joueurs", "type": "number", "placeholder": "Ex: 64" },
-            { "id": "tournament-prize", "label": "Prix à gagner", "type": "text", "placeholder": "Ex: 5000€" },
-            { "id": "tournament-date", "label": "Date du tournoi", "type": "date" },
-            { "id": "tournament-rules", "label": "Règles", "type": "textarea", "placeholder": "Décrivez les règles du tournoi..." }
+            { "id": 2, "username": "GamerPro", "tournament": "Tournoi Fortnite Duo", "date": "9 Dec 2024" }
         ];
 
         // App state
         let currentUser = null;
         let isAdmin = false;
         let currentFilter = 'all';
-        let userTournaments = [];
-        let userWins = 0;
 
-        // Reusable render functions
-        function renderNavItems(items) {
+        // Render functions
+        function renderNavItems() {
+            let items = [...navigationItems];
+            if (isAdmin) {
+                items.push({ "label": "Admin", "icon": "fas fa-crown", "section": "admin" });
+            }
             return items.map(item => 
                 `<li>
-                    <a href="${item.href}" class="flex items-center gap-2 text-gray-300 hover:text-white transition-colors" onclick="showSection('${item.section}'); return false;">
+                    <a href="#" class="flex items-center gap-2 text-gray-300 hover:text-white transition-colors" onclick="showSection('${item.section}'); return false;">
                         <i class="${item.icon}"></i>
                         <span>${item.label}</span>
                     </a>
@@ -670,8 +583,29 @@
             ).join("");
         }
 
-        function renderTournaments(items, filter = 'all') {
-            const filteredItems = filter === 'all' ? items : items.filter(item => item.type === filter);
+        function renderWinners() {
+            return winnersData.map(winner => `
+                <div class="bg-gray-800/50 rounded-lg p-4 border border-accent/30 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 winner-badge -mr-8 -mt-8 transform rotate-45"></div>
+                    <div class="flex items-center space-x-3">
+                        <div class="text-3xl text-accent">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-lg">${winner.winner}</div>
+                            <div class="text-sm text-gray-400">${winner.tournament}</div>
+                            <div class="flex items-center space-x-2 mt-1">
+                                <span class="badge bg-accent/20 text-accent">${winner.prize}</span>
+                                <span class="text-xs text-gray-500">${winner.date}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function renderTournaments() {
+            const filteredItems = currentFilter === 'all' ? tournamentsData : tournamentsData.filter(item => item.type === currentFilter);
             
             return filteredItems.map(tournament => {
                 const progress = (tournament.players / tournament.maxPlayers) * 100;
@@ -679,18 +613,18 @@
                 const isPrivate = tournament.type === 'private';
                 
                 return `
-                <div class="tournament-card bg-gray-800/50 rounded-xl overflow-hidden border border-gray-700">
+                <div class="bg-gray-800/50 rounded-xl overflow-hidden border border-gray-700">
                     <div class="relative">
-                        <img src="${tournament.image}" alt="${tournament.name}" class="w-full h-48 object-cover" loading="lazy">
+                        <img src="${tournament.image}" alt="${tournament.name}" class="w-full h-48 object-cover">
                         <div class="absolute top-4 right-4">
                             ${isPrivate ? 
-                                '<span class="badge bg-gray-900/80 text-white"><i class="fas fa-lock mr-1"></i> Privé</span>' : 
-                                '<span class="badge bg-green-900/80 text-green-300"><i class="fas fa-unlock mr-1"></i> Public</span>'
+                                '<span class="badge bg-gray-900/80"><i class="fas fa-lock mr-1"></i> Privé</span>' : 
+                                '<span class="badge bg-green-900/80"><i class="fas fa-unlock mr-1"></i> Public</span>'
                             }
                         </div>
                         <div class="absolute bottom-4 left-4">
                             <div class="flex items-center space-x-2">
-                                <div class="game-icon ${tournament.color}">
+                                <div class="w-10 h-10 ${tournament.color} rounded-lg flex items-center justify-center">
                                     <i class="${tournament.gameIcon} text-white"></i>
                                 </div>
                                 <span class="font-semibold">${tournament.game}</span>
@@ -702,7 +636,7 @@
                         <div class="flex items-center justify-between mb-3">
                             <div class="flex items-center space-x-2">
                                 <i class="fas fa-users text-gray-400"></i>
-                                <span class="text-sm">${tournament.players}/${tournament.maxPlayers} joueurs</span>
+                                <span class="text-sm">${tournament.players}/${tournament.maxPlayers}</span>
                             </div>
                             <div class="text-accent font-bold">${tournament.prize}</div>
                         </div>
@@ -710,17 +644,13 @@
                             <div class="progress-bar">
                                 <div class="progress-fill bg-primary" style="width: ${progress}%"></div>
                             </div>
-                            <div class="flex justify-between text-xs text-gray-400 mt-1">
-                                <span>${tournament.players} inscrits</span>
-                                <span>${tournament.maxPlayers} max</span>
-                            </div>
                         </div>
                         <div class="flex justify-between items-center">
                             <div class="text-sm text-gray-400">
                                 <i class="far fa-calendar mr-1"></i>${tournament.date}
                             </div>
-                            <button onclick="${isFull ? 'showNotification("Tournoi complet !", "error")' : isPrivate ? `requestJoinTournament(${tournament.id})` : `joinTournament(${tournament.id})`}" 
-                                    class="${isFull ? 'bg-gray-700 cursor-not-allowed' : 'bg-primary hover:bg-primary/90'} px-4 py-2 rounded-lg font-semibold transition-colors">
+                            <button onclick="${isFull ? 'showNotification("Tournoi complet !")' : isPrivate ? `requestJoinTournament(${tournament.id})` : `joinTournament(${tournament.id})`}" 
+                                    class="${isFull ? 'bg-gray-700 cursor-not-allowed' : 'bg-primary hover:bg-primary/90'} px-4 py-2 rounded-lg font-semibold">
                                 ${isFull ? 'Complet' : isPrivate ? 'Demander' : 'Rejoindre'}
                             </button>
                         </div>
@@ -729,127 +659,22 @@
             }).join("");
         }
 
-        function renderTeams(items) {
-            return items.map(team => {
-                const isFull = team.members >= team.maxMembers;
-                
-                return `
-                <div class="bg-gray-800/50 rounded-xl p-4 border border-gray-700">
-                    <div class="flex justify-between items-start mb-3">
-                        <div>
-                            <h3 class="text-lg font-bold">${team.name}</h3>
-                            <div class="flex items-center space-x-2 mt-1">
-                                <span class="text-sm text-gray-400">${team.game}</span>
-                                <span class="badge ${team.color} text-white">${team.rank}</span>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm text-gray-400">Créé par</div>
-                            <div class="font-semibold">${team.leader}</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center space-x-2">
-                            <i class="fas fa-users text-gray-400"></i>
-                            <span class="text-sm">${team.members}/${team.maxMembers} membres</span>
-                        </div>
-                        <div class="text-sm ${isFull ? 'text-red-400' : 'text-green-400'}">
-                            ${isFull ? '<i class="fas fa-times-circle"></i> Complet' : '<i class="fas fa-check-circle"></i> Recrutement'}
-                        </div>
-                    </div>
-                    <button onclick="${isFull ? 'showNotification("Équipe complète !", "error")' : `joinTeam(${team.id})`}" 
-                            class="w-full ${isFull ? 'bg-gray-700 cursor-not-allowed' : 'bg-primary hover:bg-primary/90'} py-2 rounded-lg font-semibold transition-colors">
-                        ${isFull ? 'Équipe complète' : 'Rejoindre'}
-                    </button>
-                </div>`;
-            }).join("");
-        }
-
-        function renderLeaderboard(items) {
-            return items.map(player => `
-                <div class="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg hover:bg-gray-800/50">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-8 h-8 flex items-center justify-center rounded-full ${player.rank <= 3 ? 'bg-gradient-to-r from-yellow-500 to-accent' : 'bg-gray-700'}">
-                            <span class="font-bold">${player.rank}</span>
-                        </div>
-                        <div>
-                            <div class="font-semibold">${player.username}</div>
-                            <div class="text-sm text-gray-400">${player.tournaments} tournois</div>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <div class="font-bold text-accent">${player.wins} victoires</div>
-                        <div class="text-sm text-gray-400">Rating: ${player.rating}</div>
-                    </div>
-                </div>
-            `).join("");
-        }
-
-        function renderTournamentHistory(items) {
-            if (items.length === 0) {
-                return '<div class="text-center py-8 text-gray-500"><i class="fas fa-trophy text-3xl mb-3"></i><p>Aucun tournoi joué</p></div>';
+        function renderAdminRequests() {
+            if (adminRequests.length === 0) {
+                return '<div class="text-center py-4 text-gray-500">Aucune demande en attente</div>';
             }
             
-            return items.map(item => `
-                <div class="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg">
-                    <div>
-                        <div class="font-semibold">${item.tournament}</div>
-                        <div class="text-sm text-gray-400">${item.date}</div>
-                    </div>
-                    <div class="text-right">
-                        <div class="font-bold ${item.position === '1er' ? 'text-accent' : 'text-primary'}">${item.position}</div>
-                        <div class="text-sm text-gray-400">${item.prize}</div>
-                    </div>
-                </div>
-            `).join("");
-        }
-
-        function renderCommunityDiscussions(items) {
-            return items.map(discussion => `
-                <div class="p-3 bg-gray-900/30 rounded-lg hover:bg-gray-900/50 cursor-pointer">
-                    <div class="font-semibold mb-1">${discussion.title}</div>
-                    <div class="flex justify-between text-sm text-gray-400">
-                        <span>Par ${discussion.author}</span>
-                        <span>${discussion.replies} réponses</span>
-                    </div>
-                    <div class="mt-2">
-                        <span class="badge bg-primary/20 text-primary">${discussion.category}</span>
-                    </div>
-                </div>
-            `).join("");
-        }
-
-        function renderCommunityEvents(items) {
-            return items.map(event => `
-                <div class="p-3 bg-gray-900/30 rounded-lg hover:bg-gray-900/50 cursor-pointer">
-                    <div class="font-semibold mb-1">${event.title}</div>
-                    <div class="flex justify-between text-sm text-gray-400">
-                        <span><i class="far fa-calendar mr-1"></i>${event.date}</span>
-                        <span><i class="fas fa-users mr-1"></i>${event.participants}</span>
-                    </div>
-                    <div class="mt-2">
-                        <span class="badge bg-secondary/20 text-secondary">${event.game}</span>
-                    </div>
-                </div>
-            `).join("");
-        }
-
-        function renderAdminRequests(items) {
-            if (items.length === 0) {
-                return '<div class="text-center py-8 text-gray-500"><i class="fas fa-check-circle text-3xl mb-3"></i><p>Aucune demande en attente</p></div>';
-            }
-            
-            return items.map(request => `
+            return adminRequests.map(request => `
                 <div class="flex items-center justify-between p-3 bg-gray-900/30 rounded-lg">
                     <div>
                         <div class="font-semibold">${request.username}</div>
                         <div class="text-sm text-gray-400">${request.tournament}</div>
                     </div>
                     <div class="flex space-x-2">
-                        <button onclick="approveRequest(${request.id})" class="px-3 py-1 bg-success hover:bg-success/90 rounded-lg text-sm font-medium">
+                        <button onclick="approveRequest(${request.id})" class="px-3 py-1 bg-success hover:bg-success/90 rounded-lg text-sm">
                             <i class="fas fa-check mr-1"></i>Accepter
                         </button>
-                        <button onclick="rejectRequest(${request.id})" class="px-3 py-1 bg-danger hover:bg-danger/90 rounded-lg text-sm font-medium">
+                        <button onclick="rejectRequest(${request.id})" class="px-3 py-1 bg-danger hover:bg-danger/90 rounded-lg text-sm">
                             <i class="fas fa-times mr-1"></i>Refuser
                         </button>
                     </div>
@@ -857,96 +682,28 @@
             `).join("");
         }
 
-        function renderCreateTournamentForm(fields) {
-            return `
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    ${fields.map(field => `
-                        <div class="${field.type === 'textarea' ? 'md:col-span-2' : ''}">
-                            <label class="block text-sm font-medium text-gray-300 mb-2">${field.label}</label>
-                            ${field.type === 'textarea' ? 
-                                `<textarea id="${field.id}" placeholder="${field.placeholder || ''}" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" rows="3"></textarea>` :
-                                `<input type="${field.type}" id="${field.id}" placeholder="${field.placeholder || ''}" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">`
-                            }
-                        </div>
-                    `).join("")}
-                </div>
-                <div class="mt-4">
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Type de tournoi</label>
-                    <div class="flex space-x-4">
-                        <label class="flex items-center">
-                            <input type="radio" name="tournament-type" value="public" checked class="mr-2">
-                            <span>Public</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="tournament-type" value="private" class="mr-2">
-                            <span>Privé</span>
-                        </label>
-                    </div>
-                </div>
-                <button onclick="createTournament()" class="w-full mt-6 bg-primary hover:bg-primary/90 text-white py-3 rounded-lg font-semibold transition-colors">
-                    <i class="fas fa-plus mr-2"></i>Créer le tournoi
-                </button>
-            `;
+        function updateWinnerSelect() {
+            const select = document.getElementById('winner-tournament');
+            if (select) {
+                select.innerHTML = '<option value="">Sélectionner un tournoi</option>' + 
+                    tournamentsData.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+            }
         }
-
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
-            // Render navigation
-            document.getElementById('desktop-nav').innerHTML = renderNavItems(navigationItems);
-            document.getElementById('mobile-nav-items').innerHTML = renderNavItems(navigationItems);
-            
-            // Render initial content
-            document.getElementById('tournaments-container').innerHTML = renderTournaments(tournamentsData);
-            document.getElementById('teams-container').innerHTML = renderTeams(teamsData);
-            document.getElementById('leaderboard').innerHTML = renderLeaderboard(leaderboardData);
-            document.getElementById('tournament-history').innerHTML = renderTournamentHistory(tournamentHistoryData);
-            document.getElementById('community-discussions').innerHTML = renderCommunityDiscussions(communityDiscussions);
-            document.getElementById('community-events').innerHTML = renderCommunityEvents(communityEvents);
-            document.getElementById('admin-requests-list').innerHTML = renderAdminRequests(adminRequests);
-            document.getElementById('create-tournament-form').innerHTML = renderCreateTournamentForm(createTournamentFormFields);
-            
-            // Set initial stats
-            updateUserStats();
-        });
 
         // Core functions
         function showSection(sectionId) {
-            // Hide all sections
             document.querySelectorAll('main > section').forEach(section => {
                 section.classList.add('hidden');
             });
             
-            // Show selected section
             const section = document.getElementById(sectionId);
             if (section) {
                 section.classList.remove('hidden');
             }
-            
-            // Update mobile menu if open
-            toggleMobileMenu(false);
-        }
-
-        function toggleMobileMenu(show) {
-            const menu = document.getElementById('mobile-menu');
-            if (show !== undefined) {
-                if (show) {
-                    menu.classList.add('open');
-                } else {
-                    menu.classList.remove('open');
-                }
-            } else {
-                menu.classList.toggle('open');
-            }
         }
 
         function toggleLogin() {
-            const modal = document.getElementById('login-modal');
-            modal.classList.toggle('hidden');
-        }
-
-        function toggleAdminModal() {
-            const modal = document.getElementById('admin-modal');
-            modal.classList.toggle('hidden');
+            document.getElementById('login-modal').classList.toggle('hidden');
         }
 
         function switchToRegister() {
@@ -964,44 +721,55 @@
             const password = document.getElementById('login-password').value.trim();
             
             if (!username || !password) {
-                showNotification("Veuillez remplir tous les champs", "error");
+                showNotification("Veuillez remplir tous les champs");
                 return;
             }
             
-            // Simulate login
-            currentUser = {
-                username: username,
-                role: username.toLowerCase() === 'admin' ? 'admin' : 'player',
-                wins: Math.floor(Math.random() * 20),
-                tournaments: Math.floor(Math.random() * 30),
-                rank: Math.floor(Math.random() * 100) + 1
-            };
-            
-            isAdmin = currentUser.role === 'admin';
+            // Check admin credentials
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                currentUser = {
+                    username: username,
+                    role: 'admin',
+                    wins: 42,
+                    tournaments: 56,
+                    rank: 1
+                };
+                isAdmin = true;
+            } else {
+                currentUser = {
+                    username: username,
+                    role: 'player',
+                    wins: Math.floor(Math.random() * 10),
+                    tournaments: Math.floor(Math.random() * 20),
+                    rank: Math.floor(Math.random() * 100) + 1
+                };
+                isAdmin = false;
+            }
             
             // Update UI
             document.getElementById('profile-username').textContent = currentUser.username;
-            document.getElementById('mobile-username').textContent = currentUser.username;
-            document.getElementById('mobile-userrole').textContent = isAdmin ? 'Administrateur' : 'Joueur';
             document.getElementById('profile-wins').textContent = currentUser.wins;
             document.getElementById('profile-tournaments').textContent = currentUser.tournaments;
             document.getElementById('profile-rank').textContent = `#${currentUser.rank}`;
             
-            // Update buttons
+            // Update navigation
+            document.getElementById('desktop-nav').innerHTML = renderNavItems();
+            
+            // Update login button
             document.getElementById('login-btn').innerHTML = `<i class="fas fa-user mr-2"></i>${currentUser.username}`;
             document.getElementById('profile-login-btn').innerHTML = `<i class="fas fa-sign-out-alt mr-2"></i>Déconnexion`;
             document.getElementById('profile-login-btn').onclick = performLogout;
             
-            if (isAdmin) {
-                document.getElementById('admin-btn').classList.remove('hidden');
-            }
-            
             // Close modal
             toggleLogin();
-            showNotification(`Bienvenue ${currentUser.username} !`, "success");
             
-            // Update stats
-            updateUserStats();
+            if (isAdmin) {
+                showNotification("Bienvenue Administrateur !");
+                showSection('admin');
+            } else {
+                showNotification(`Bienvenue ${username} !`);
+                showSection('home');
+            }
         }
 
         function performRegister() {
@@ -1010,21 +778,15 @@
             const confirm = document.getElementById('register-confirm').value.trim();
             
             if (!username || !password || !confirm) {
-                showNotification("Veuillez remplir tous les champs", "error");
+                showNotification("Veuillez remplir tous les champs");
                 return;
             }
             
             if (password !== confirm) {
-                showNotification("Les mots de passe ne correspondent pas", "error");
+                showNotification("Les mots de passe ne correspondent pas");
                 return;
             }
             
-            if (password.length < 6) {
-                showNotification("Le mot de passe doit faire au moins 6 caractères", "error");
-                return;
-            }
-            
-            // Simulate registration
             currentUser = {
                 username: username,
                 role: 'player',
@@ -1035,179 +797,88 @@
             
             isAdmin = false;
             
-            // Update UI
             document.getElementById('profile-username').textContent = currentUser.username;
-            document.getElementById('mobile-username').textContent = currentUser.username;
-            document.getElementById('mobile-userrole').textContent = 'Joueur';
             document.getElementById('profile-wins').textContent = '0';
             document.getElementById('profile-tournaments').textContent = '0';
             document.getElementById('profile-rank').textContent = '#999';
             
-            // Update buttons
             document.getElementById('login-btn').innerHTML = `<i class="fas fa-user mr-2"></i>${currentUser.username}`;
             document.getElementById('profile-login-btn').innerHTML = `<i class="fas fa-sign-out-alt mr-2"></i>Déconnexion`;
             document.getElementById('profile-login-btn').onclick = performLogout;
-            document.getElementById('admin-btn').classList.add('hidden');
             
-            // Switch to login form and close
             switchToLogin();
             toggleLogin();
-            showNotification(`Compte créé avec succès ! Bienvenue ${username}`, "success");
-            
-            // Update stats
-            updateUserStats();
+            showNotification(`Compte créé avec succès !`);
         }
 
         function performLogout() {
             currentUser = null;
             isAdmin = false;
             
-            // Reset UI
             document.getElementById('profile-username').textContent = 'Invité';
-            document.getElementById('mobile-username').textContent = 'Invité';
-            document.getElementById('mobile-userrole').textContent = 'Joueur';
             document.getElementById('profile-wins').textContent = '0';
             document.getElementById('profile-tournaments').textContent = '0';
             document.getElementById('profile-rank').textContent = '#0';
             
-            document.getElementById('login-btn').innerHTML = `<i class="fas fa-sign-in-alt mr-2"></i>Connexion`;
-            document.getElementById('login-btn').onclick = toggleLogin;
-            document.getElementById('profile-login-btn').innerHTML = `<i class="fas fa-sign-in-alt mr-2"></i>Se connecter`;
+            document.getElementById('login-btn').innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>Connexion';
+            document.getElementById('profile-login-btn').innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>Se connecter';
             document.getElementById('profile-login-btn').onclick = toggleLogin;
-            document.getElementById('admin-btn').classList.add('hidden');
             
-            showNotification("Déconnexion réussie", "info");
+            document.getElementById('desktop-nav').innerHTML = renderNavItems();
+            
+            showNotification("Déconnexion réussie");
+            showSection('home');
         }
 
         function filterTournaments(filter) {
             currentFilter = filter;
-            document.getElementById('tournaments-container').innerHTML = renderTournaments(tournamentsData, filter);
+            document.getElementById('tournaments-container').innerHTML = renderTournaments();
         }
 
         function joinTournament(tournamentId) {
             if (!currentUser) {
-                showNotification("Connectez-vous pour rejoindre un tournoi", "error");
+                showNotification("Connectez-vous pour rejoindre un tournoi");
                 toggleLogin();
                 return;
             }
             
             const tournament = tournamentsData.find(t => t.id === tournamentId);
-            if (!tournament) return;
-            
-            if (tournament.players >= tournament.maxPlayers) {
-                showNotification("Tournoi complet !", "error");
-                return;
+            if (tournament && tournament.players < tournament.maxPlayers) {
+                tournament.players++;
+                document.getElementById('tournaments-container').innerHTML = renderTournaments();
+                showNotification(`Vous avez rejoint ${tournament.name} !`);
             }
-            
-            tournament.players++;
-            userTournaments.push(tournamentId);
-            
-            // Update UI
-            document.getElementById('tournaments-container').innerHTML = renderTournaments(tournamentsData, currentFilter);
-            updateUserStats();
-            
-            showNotification(`Vous avez rejoint ${tournament.name} !`, "success");
         }
 
         function requestJoinTournament(tournamentId) {
             if (!currentUser) {
-                showNotification("Connectez-vous pour faire une demande", "error");
+                showNotification("Connectez-vous pour faire une demande");
                 toggleLogin();
                 return;
             }
             
             const tournament = tournamentsData.find(t => t.id === tournamentId);
-            if (!tournament) return;
-            
-            // Add to admin requests
-            adminRequests.unshift({
+            adminRequests.push({
                 id: Date.now(),
                 username: currentUser.username,
                 tournament: tournament.name,
                 date: new Date().toLocaleDateString('fr-FR')
             });
             
-            // Update admin requests list
-            document.getElementById('admin-requests-list').innerHTML = renderAdminRequests(adminRequests);
-            document.getElementById('admin-pending-requests').textContent = adminRequests.length;
-            
-            showNotification("Demande envoyée à l'administrateur", "success");
+            document.getElementById('admin-requests-list').innerHTML = renderAdminRequests();
+            showNotification("Demande envoyée à l'administrateur");
         }
 
-        function joinTeam(teamId) {
-            if (!currentUser) {
-                showNotification("Connectez-vous pour rejoindre une équipe", "error");
-                toggleLogin();
-                return;
-            }
+        function createNewTournament() {
+            const name = document.getElementById('new-tournament-name').value.trim();
+            const game = document.getElementById('new-tournament-game').value.trim();
+            const maxPlayers = parseInt(document.getElementById('new-tournament-max').value);
+            const prize = document.getElementById('new-tournament-prize').value.trim();
+            const date = document.getElementById('new-tournament-date').value;
+            const type = document.getElementById('new-tournament-type').value;
             
-            const team = teamsData.find(t => t.id === teamId);
-            if (!team) return;
-            
-            if (team.members >= team.maxMembers) {
-                showNotification("Équipe complète !", "error");
-                return;
-            }
-            
-            team.members++;
-            document.getElementById('teams-container').innerHTML = renderTeams(teamsData);
-            
-            showNotification(`Vous avez rejoint ${team.name} !`, "success");
-        }
-
-        function showCreateTeamModal() {
-            if (!currentUser) {
-                showNotification("Connectez-vous pour créer une équipe", "error");
-                toggleLogin();
-                return;
-            }
-            
-            const teamName = prompt("Nom de l'équipe :");
-            if (!teamName) return;
-            
-            const game = prompt("Jeu principal :");
-            if (!game) return;
-            
-            const maxMembers = prompt("Nombre maximum de membres (2-10) :", "5");
-            if (!maxMembers || isNaN(maxMembers) || maxMembers < 2 || maxMembers > 10) {
-                showNotification("Nombre de membres invalide", "error");
-                return;
-            }
-            
-            const newTeam = {
-                id: teamsData.length + 1,
-                name: teamName,
-                game: game,
-                members: 1,
-                maxMembers: parseInt(maxMembers),
-                rank: "Débutant",
-                status: "open",
-                leader: currentUser.username,
-                color: "bg-gray-500/20"
-            };
-            
-            teamsData.unshift(newTeam);
-            document.getElementById('teams-container').innerHTML = renderTeams(teamsData);
-            
-            showNotification(`Équipe ${teamName} créée !`, "success");
-        }
-
-        function createTournament() {
-            if (!isAdmin) {
-                showNotification("Accès administrateur requis", "error");
-                return;
-            }
-            
-            const name = document.getElementById('tournament-name').value.trim();
-            const game = document.getElementById('tournament-game').value.trim();
-            const maxPlayers = parseInt(document.getElementById('tournament-max-players').value);
-            const prize = document.getElementById('tournament-prize').value.trim();
-            const date = document.getElementById('tournament-date').value;
-            const rules = document.getElementById('tournament-rules').value.trim();
-            const type = document.querySelector('input[name="tournament-type"]:checked').value;
-            
-            if (!name || !game || !maxPlayers || !prize || !date || !rules) {
-                showNotification("Veuillez remplir tous les champs", "error");
+            if (!name || !game || !maxPlayers || !prize || !date) {
+                showNotification("Veuillez remplir tous les champs");
                 return;
             }
             
@@ -1233,7 +904,7 @@
                 id: tournamentsData.length + 1,
                 name: name,
                 game: game,
-                image: `https://picsum.photos/400/300?random=${tournamentsData.length + 10}`,
+                image: `https://picsum.photos/400/300?random=${Date.now()}`,
                 players: 0,
                 maxPlayers: maxPlayers,
                 type: type,
@@ -1245,94 +916,116 @@
             };
             
             tournamentsData.unshift(newTournament);
-            document.getElementById('tournaments-container').innerHTML = renderTournaments(tournamentsData, currentFilter);
+            document.getElementById('tournaments-container').innerHTML = renderTournaments();
+            document.getElementById('admin-total-tournaments').textContent = tournamentsData.length;
+            document.getElementById('admin-active-tournaments').textContent = tournamentsData.filter(t => t.status === 'open').length;
             
-            // Update admin stats
-            document.getElementById('admin-active-tournaments').textContent = tournamentsData.length;
+            updateWinnerSelect();
             
-            // Reset form
-            createTournamentFormFields.forEach(field => {
-                const element = document.getElementById(field.id);
-                if (element) element.value = '';
+            document.getElementById('new-tournament-name').value = '';
+            document.getElementById('new-tournament-game').value = '';
+            document.getElementById('new-tournament-max').value = '';
+            document.getElementById('new-tournament-prize').value = '';
+            document.getElementById('new-tournament-date').value = '';
+            
+            showNotification("Tournoi créé avec succès !");
+        }
+
+        function declareWinner() {
+            const tournamentId = document.getElementById('winner-tournament').value;
+            const winnerName = document.getElementById('winner-name').value.trim();
+            const winnerPrize = document.getElementById('winner-prize').value.trim();
+            
+            if (!tournamentId || !winnerName || !winnerPrize) {
+                showNotification("Veuillez remplir tous les champs");
+                return;
+            }
+            
+            const tournament = tournamentsData.find(t => t.id == tournamentId);
+            
+            winnersData.unshift({
+                tournament: tournament.name,
+                winner: winnerName,
+                prize: winnerPrize,
+                date: new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
             });
             
-            toggleAdminModal();
-            showNotification(`Tournoi ${name} créé avec succès !`, "success");
+            document.getElementById('winners-container').innerHTML = renderWinners();
+            document.getElementById('admin-total-winners').textContent = winnersData.length;
+            
+            // Update leaderboard
+            const playerInLeaderboard = leaderboardData.find(p => p.username === winnerName);
+            if (playerInLeaderboard) {
+                playerInLeaderboard.wins++;
+            } else {
+                leaderboardData.push({
+                    rank: leaderboardData.length + 1,
+                    username: winnerName,
+                    wins: 1,
+                    tournaments: 1,
+                    rating: 1500
+                });
+            }
+            
+            document.getElementById('winner-name').value = '';
+            document.getElementById('winner-prize').value = '';
+            
+            showNotification(`${winnerName} a été déclaré gagnant !`);
         }
 
         function approveRequest(requestId) {
-            const index = adminRequests.findIndex(r => r.id === requestId);
-            if (index !== -1) {
-                adminRequests.splice(index, 1);
-                document.getElementById('admin-requests-list').innerHTML = renderAdminRequests(adminRequests);
-                document.getElementById('admin-pending-requests').textContent = adminRequests.length;
-                showNotification("Demande approuvée", "success");
-            }
+            adminRequests = adminRequests.filter(r => r.id !== requestId);
+            document.getElementById('admin-requests-list').innerHTML = renderAdminRequests();
+            showNotification("Demande approuvée");
         }
 
         function rejectRequest(requestId) {
-            const index = adminRequests.findIndex(r => r.id === requestId);
-            if (index !== -1) {
-                adminRequests.splice(index, 1);
-                document.getElementById('admin-requests-list').innerHTML = renderAdminRequests(adminRequests);
-                document.getElementById('admin-pending-requests').textContent = adminRequests.length;
-                showNotification("Demande refusée", "info");
-            }
+            adminRequests = adminRequests.filter(r => r.id !== requestId);
+            document.getElementById('admin-requests-list').innerHTML = renderAdminRequests();
+            showNotification("Demande refusée");
         }
 
-        function updateUserStats() {
-            if (currentUser) {
-                document.getElementById('profile-wins').textContent = currentUser.wins;
-                document.getElementById('profile-tournaments').textContent = currentUser.tournaments;
-                document.getElementById('profile-rank').textContent = `#${currentUser.rank}`;
-            }
-        }
-
-        function showNotification(message, type) {
-            // Create notification element
+        function showNotification(message) {
             const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 ${
-                type === 'success' ? 'bg-green-900/90 text-green-100 border border-green-700' :
-                type === 'error' ? 'bg-red-900/90 text-red-100 border border-red-700' :
-                'bg-blue-900/90 text-blue-100 border border-blue-700'
-            }`;
+            notification.className = 'fixed top-4 right-4 z-50 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg border border-primary/50';
             notification.innerHTML = `
                 <div class="flex items-center">
-                    <i class="fas ${
-                        type === 'success' ? 'fa-check-circle' :
-                        type === 'error' ? 'fa-exclamation-circle' :
-                        'fa-info-circle'
-                    } mr-3"></i>
+                    <i class="fas fa-info-circle text-primary mr-3"></i>
                     <span>${message}</span>
                 </div>
             `;
             
             document.body.appendChild(notification);
             
-            // Remove after 3 seconds
             setTimeout(() => {
                 notification.style.opacity = '0';
-                notification.style.transform = 'translateX(100%)';
                 setTimeout(() => {
                     document.body.removeChild(notification);
                 }, 300);
             }, 3000);
         }
 
-        // Event delegation for mobile navigation
-        document.addEventListener('click', function(event) {
-            const link = event.target.closest('a[href^="#"]');
-            if (!link) return;
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('desktop-nav').innerHTML = renderNavItems();
+            document.getElementById('winners-container').innerHTML = renderWinners();
+            document.getElementById('tournaments-container').innerHTML = renderTournaments();
+            document.getElementById('admin-requests-list').innerHTML = renderAdminRequests();
+            updateWinnerSelect();
             
-            event.preventDefault();
-            const targetId = link.getAttribute('href');
-            if (targetId === '#') return;
-            
-            const target = document.querySelector(targetId);
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+            // Admin stats
+            document.getElementById('admin-total-tournaments').textContent = tournamentsData.length;
+            document.getElementById('admin-total-players').textContent = '856';
+            document.getElementById('admin-active-tournaments').textContent = tournamentsData.filter(t => t.status === 'open').length;
+            document.getElementById('admin-total-winners').textContent = winnersData.length;
         });
+
+        // Leaderboard data
+        const leaderboardData = [
+            { "rank": 1, "username": "ProPlayer1", "wins": 42, "tournaments": 56, "rating": 2450 },
+            { "rank": 2, "username": "FortniteKing", "wins": 38, "tournaments": 48, "rating": 2310 },
+            { "rank": 3, "username": "MidLanePro", "wins": 35, "tournaments": 52, "rating": 2250 }
+        ];
     </script>
 </body>
 </html>
